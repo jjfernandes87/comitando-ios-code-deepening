@@ -11,7 +11,7 @@ final class HomeViewController: UITableViewController {
     
     private var service: ServiceProtocol = Service()
     private var model: HomeModel?
-    private var numberOfFixedElements: Int = 4
+    private var numberOfFixedElements: Int = 3
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,13 +77,14 @@ extension HomeViewController {
         case 0: return makeTitleView(title: model.h1, indexPath: indexPath)
         case 1: return makeMyPatrimonyView(viewModel: model.patrimony, indexPath:indexPath)
         case 2: return makeTitleView(title: model.h3, indexPath: indexPath)
-        default: return makeCollectionProductsView(viewModel: model.products[indexPath.row], indexPath: indexPath)
+        default: return makeCollectionProductsView(viewModel: model.products[indexPath.row - numberOfFixedElements], indexPath: indexPath)
         }
     }
     
 }
 
-private extension HomeViewController {
+// MARK: Internal methods
+extension HomeViewController {
     
     func registerCells() {
         tableView.register(UINib(nibName: "TitleViewCell", bundle: nil), forCellReuseIdentifier: TitleViewCell.cellIdentifier)
@@ -109,4 +110,5 @@ private extension HomeViewController {
         cell.setup(model: model)
         return cell
     }
+    
 }
