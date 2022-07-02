@@ -1,0 +1,36 @@
+{
+    "h1": "Meus Investimentos",
+    "patrimony_card": {
+        "icon": "coloncurrencysign.circle",
+        "title": "Patrimônio",
+        "amount": "R$ 250.000,00",
+        "footer": "ultima atualização 2 min atrás"
+    },
+    "h3": "Nossos produtos",
+    "products_collection": [
+        {
+            "left": {
+                "icon": "circle.grid.2x2",
+                "title": "Renda Fixa",
+                "detail": "Invista em CDB, CRI, CRA, Debêntures, LC, LCA, LCI"
+            },
+            "right": {
+                "icon": "circle.grid.2x2",
+                "title": "Renda Variável",
+                "detail": "Invista em ações, ETFs, Fundos Imobiliários"
+            }
+        },
+        {
+            "left": {
+                "icon": "circle.grid.2x2",
+                "title": "Fundos de Investimentos",
+                "detail": "Invista em Fundos de Renda Fixa, Multimercados e Internacionais"
+            },
+            "right": {
+                "icon": "circle.grid.2x2",
+                "title": "Tesouro Direto",
+                "detail": "Invista em Selic, IPCA e Prefixado"
+            }
+        }
+    ]
+}
