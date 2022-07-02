@@ -1,8 +1,3 @@
-//
-//  AppDelegate.swift
-//  SampleApp
-//
-
 import UIKit
 
 @UIApplicationMain

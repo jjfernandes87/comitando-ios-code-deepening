@@ -8,10 +8,15 @@
 import UIKit
 
 final class HomeViewController: UITableViewController {
-
+    
+    private var service: ServiceProtocol = Service()
+    private var model: HomeModel?
+    private var numberOfFixedElements: Int = 4
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCells()
+        fetchData()
     }
     
     @objc func didTapFixedIncone() {
@@ -32,32 +37,50 @@ final class HomeViewController: UITableViewController {
 
 }
 
+// MARK: Service methods
+extension HomeViewController {
+    func fetchData() {
+        service.load(endpoint: .home) { [weak self] (response: Result<HomeModel, ServiceError>) in
+            switch response {
+            case .success(let data): self?.showData(data)
+            case .failure(let error): print(error.localizedDescription)
+            }
+        }
+    }
+}
+
+// MARK: State control methods
+extension HomeViewController {
+    
+    func showData(_ data: HomeModel) {
+        self.model = data
+        tableView.reloadData()
+    }
+}
+
 // MARK: - Table view data source
 extension HomeViewController {
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        guard let model = self.model else {
+            return 0
+        }
+        return numberOfFixedElements + model.products.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let model = self.model else {
+            return UITableViewCell()
+        }
+        
         switch indexPath.row {
-        case 1: return makeMyPatrimonyView(indexPath: indexPath)
-        case 2: return makeTitleView(title: "Nossos produtos", indexPath: indexPath)
-        case 3: return makeCollectionProductsViewOne(indexPath: indexPath)
-        case 4: return makeCollectionProductsViewTwo(indexPath: indexPath)
-        default: return makeTitleView(title: "Meus Investimentos", indexPath: indexPath)
+        case 0: return makeTitleView(title: model.h1, indexPath: indexPath)
+        case 1: return makeMyPatrimonyView(viewModel: model.patrimony, indexPath:indexPath)
+        case 2: return makeTitleView(title: model.h3, indexPath: indexPath)
+        default: return makeCollectionProductsView(viewModel: model.products[indexPath.row], indexPath: indexPath)
         }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.row {
-        case 1: performSegue(withIdentifier: "showMyInvestments", sender: nil)
-        default: break
-        }
-    }
 }
 
 private extension HomeViewController {
@@ -74,25 +97,14 @@ private extension HomeViewController {
         return cell
     }
     
-    func makeMyPatrimonyView(indexPath: IndexPath) -> UITableViewCell {
+    func makeMyPatrimonyView(viewModel: PatrimonyModel, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MyPatrimonyViewCell.cellIdentifier, for: indexPath) as! MyPatrimonyViewCell
-        cell.setup(model: PatrimonyModel())
+        cell.setup(model: viewModel)
         return cell
     }
     
-    func makeCollectionProductsViewOne(indexPath: IndexPath) -> UITableViewCell {
-        let left = CollectionProductData(target: self, selector: #selector(didTapFixedIncone), title: "Renda Fixa", detail: "Invista em CDB, CRI, CRA, Debêntures, LC, LCA, LCI")
-        let right = CollectionProductData(target: self, selector: #selector(didTapStocks), title: "Renda Variável", detail: "Invista em ações, ETFs, Fundos Imobiliários")
-        let model = CollectionProductModel(left: left, right: right)
-        let cell = tableView.dequeueReusableCell(withIdentifier: CollectionProductsViewCell.cellIdentifier, for: indexPath) as! CollectionProductsViewCell
-        cell.setup(model: model)
-        return cell
-    }
-    
-    func makeCollectionProductsViewTwo(indexPath: IndexPath) -> UITableViewCell {
-        let left = CollectionProductData(target: self, selector: #selector(didTapFunds), title: "Fundos de Investimentos", detail: "Invista em Fundos de Renda Fixa, Multimercados e Internacionais")
-        let right = CollectionProductData(target: self, selector: #selector(didTapTreasury), title: "Tesouro Direto", detail: "Invista em Selic, IPCA e Prefixado")
-        let model = CollectionProductModel(left: left, right: right)
+    func makeCollectionProductsView(viewModel: CollectionProductModel, indexPath: IndexPath) -> UITableViewCell {
+        let model = CollectionProductModel(left: viewModel.left, right: viewModel.right)
         let cell = tableView.dequeueReusableCell(withIdentifier: CollectionProductsViewCell.cellIdentifier, for: indexPath) as! CollectionProductsViewCell
         cell.setup(model: model)
         return cell

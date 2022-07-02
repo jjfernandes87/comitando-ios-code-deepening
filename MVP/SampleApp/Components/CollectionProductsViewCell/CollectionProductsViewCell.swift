@@ -1,10 +1,3 @@
-//
-//  CollectionProductsViewCell.swift
-//  SampleApp
-//
-//  Created by Julio Fernandes on 26/03/22.
-//
-
 import UIKit
 
 class CollectionProductsViewCell: UITableViewCell {
@@ -35,12 +28,10 @@ class CollectionProductsViewCell: UITableViewCell {
     }
     
     func setup(model: CollectionProductModel) {
-        leftButon.addTarget(model.left.target, action: model.left.selector, for: .touchUpInside)
         leftIconView.image = UIImage(systemName: model.left.iconName)
         leftTitleLabel.text = model.left.title
         leftDetailLabel.text = model.left.detail
         
-        rightButon.addTarget(model.right.target, action: model.right.selector, for: .touchUpInside)
         rightIconView.image = UIImage(systemName: model.right.iconName)
         rightTitleLabel.text = model.right.title
         rightDetailLabel.text = model.right.detail

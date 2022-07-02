@@ -1,21 +1,12 @@
-//
-//  CollectionProductModel.swift
-//  XIB
-//
-//  Created by Julio Fernandes on 02/07/22.
-//
-
 import Foundation
 
-struct CollectionProductModel {
+struct CollectionProductModel: Decodable {
     let left: CollectionProductData
     let right: CollectionProductData
 }
 
-struct CollectionProductData {
-    let target: Any?
-    let selector: Selector
-    let iconName: String = "circle.grid.2x2"
+struct CollectionProductData: Decodable {
+    let iconName: String
     let title: String
     let detail: String
 }

@@ -1,10 +1,3 @@
-//
-//  TitleViewCell.swift
-//  SampleApp
-//
-//  Created by Julio Fernandes on 26/03/22.
-//
-
 import UIKit
 
 class TitleViewCell: UITableViewCell {

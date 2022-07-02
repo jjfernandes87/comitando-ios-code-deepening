@@ -1,10 +1,3 @@
-//
-//  MyPatrimonyViewCell.swift
-//  SampleApp
-//
-//  Created by Julio Fernandes on 26/03/22.
-//
-
 import UIKit
 
 class MyPatrimonyViewCell: UITableViewCell {
